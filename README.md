@@ -14,7 +14,6 @@ The Missile Launcher is a Python-based control system for the USB desktop missil
 - [Usage Examples](#usage-examples)
 - [Troubleshooting](#troubleshooting)
 - [Documentation](#documentation)
-- [License](#license)
 
 ---
 
@@ -383,23 +382,6 @@ missile_launcher/
 ├── MISSILE_LAUNCHER_V2_GUIDE.md   # This guide
 └── README.md                       # Project overview
 ```
-
----
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](../../LICENSE) file for details.
-
-### MIT License
-
-The Missile Launcher software is distributed under the MIT License, which allows for:
-- ✓ Commercial use
-- ✓ Modification
-- ✓ Distribution
-- ✓ Private use
-
-With the conditions:
-- ⚠ License and copyright notice must be included
 
 ---
 
