@@ -8,6 +8,8 @@ The Missile Launcher is a Python-based control system for the USB desktop missil
 
 - [Requirements](#requirements)
 - [Installation](#installation)
+  - [Finding Your Device IDs (Linux)](#finding-your-device-ids-linux)
+  - [Finding Your Device IDs (Windows 11)](#finding-your-device-ids-windows-11)
 - [Quick Start](#quick-start)
 - [API Reference](#api-reference)
 - [Transfer Codes](#transfer-codes)
@@ -55,7 +57,7 @@ pip install hid
 
 Ensure your USB missile launcher is connected to your computer.
 
-#### Finding Your Device IDs
+#### Finding Your Device IDs (Linux)
 
 You need to find your launcher's Vendor ID and Product ID:
 
@@ -75,6 +77,51 @@ In this example:
 - Product ID = `0x5678`
 
 Update the `VENDOR_ID` and `PRODUCT_ID` values in `missileFunctions.py` with your actual device IDs.
+
+#### Finding Your Device IDs (Windows 11)
+
+**Method 1: Using Device Manager**
+
+1. Connect your USB missile launcher to your computer
+2. Right-click the **Start** button and select **Device Manager**
+3. Look for your launcher under **Universal Serial Bus controllers** or **Human Interface Devices**
+4. Right-click on your device and select **Properties**
+5. Go to the **Details** tab
+6. In the dropdown menu, select **Hardware IDs**
+7. You'll see an ID in the format `USB\VID_VVVV&PID_PPPP`
+
+Example:
+```
+USB\VID_1234&PID_5678&REV_0100
+```
+
+From this:
+- Vendor ID = `0x1234`
+- Product ID = `0x5678`
+
+**Method 2: Using PowerShell (Command Line)**
+
+1. Open PowerShell as Administrator
+2. Run the following command:
+
+```powershell
+Get-PnpDevice -PresentOnly | Where-Object {$_.InstanceId -like "USB*"} | Format-Table Name, InstanceId
+```
+
+3. Look for your missile launcher in the list and note its Instance ID (format: `USB\VID_VVVV&PID_PPPP...`)
+
+**Method 3: Using Command Prompt**
+
+1. Open Command Prompt as Administrator
+2. Run:
+
+```cmd
+wmic path Win32_PnPEntity where Description="Your Launcher Name" get DeviceID
+```
+
+3. The output will show the Hardware ID in the format `USB\VID_VVVV&PID_PPPP`
+
+Once you've identified the Vendor ID and Product ID, update the `VENDOR_ID` and `PRODUCT_ID` values in `missileFunctions.py` with your actual device IDs.
 
 ### 3. Verify Installation
 
@@ -401,6 +448,6 @@ For additional support:
 
 ---
 
-**Last Updated:** May 9, 2026  
-**Version:** 2.0  
+**Last Updated:** May 14, 2026  
+**Version:** 2.1  
 **Status:** Active
