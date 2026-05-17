@@ -3,47 +3,135 @@ import usb.core
 import usb.util
 import time
 
-def send(cmd):
-    packet = [0x02, cmd, 0, 0, 0, 0, 0, 0]
+class Missile_Commands:
+    """
+    A class to control USB missile launcher commands.
+    
+    This class provides methods to control a USB-based missile launcher device,
+    allowing directional movement (left, right, up, down) and firing capabilities.
+    All movement commands accept an optional duration parameter and automatically
+    stop the device after movement completes.
+    
+    Methods:
+        send: Send a raw command packet to the launcher device
+        stop: Stop all launcher movement
+        left: Rotate launcher left for specified duration
+        right: Rotate launcher right for specified duration
+        up: Tilt launcher up for specified duration
+        down: Tilt launcher down for specified duration
+        fire: Fire the launcher
+    """
+    @classmethod
+    def send(cls, cmd):
+        """
+        Send a raw command packet to the launcher device.
+        
+        Args:
+            cmd (int): The command byte to send to the launcher
+            
+        Returns:
+            None
+        """
+        packet = [0x02, cmd, 0, 0, 0, 0, 0, 0]
 
-    dev.ctrl_transfer(
-        0x21, # bmRequestType
-        0x09, # bRequest
-        0x0200, # wValue
-        0,     # wIndex
-        packet # data
-    )
+        dev.ctrl_transfer(
+            0x21, # bmRequestType
+            0x09, # bRequest
+            0x0200, # wValue
+            0,     # wIndex
+            packet # data
+        )
 
-def stop():
-    send(0x20)
+    @classmethod
+    def left(cls, seconds=0.5):
+        """
+        Rotate launcher left for the specified duration.
+        
+        Args:
+            seconds (float): Duration in seconds to rotate left (default: 0.5)
+            
+        Returns:
+            None
+        """
+        cls.send(0x04)
+        time.sleep(seconds)
+        cls.stop()
 
-def left(seconds=0.5):
-    send(0x04)
-    time.sleep(seconds)
-    stop()
+    @classmethod
+    def right(cls, seconds=0.5):
+        """
+        Rotate launcher right for the specified duration.
+        
+        Args:
+            seconds (float): Duration in seconds to rotate right (default: 0.5)
+            
+        Returns:
+            None
+        """
+        cls.send(0x08)
+        time.sleep(seconds)
+        cls.stop()
 
-def right(seconds=0.5):
-    send(0x08)
-    time.sleep(seconds)
-    stop()
+    @classmethod
+    def up(cls, seconds=0.5):
+        """
+        Tilt launcher up for the specified duration.
+        
+        Args:
+            seconds (float): Duration in seconds to tilt up (default: 0.5)
+            
+        Returns:
+            None
+        """
+        cls.send(0x02)
+        time.sleep(seconds)
+        cls.stop()
 
-def up(seconds=0.5):
-    send(0x02)
-    time.sleep(seconds)
-    stop()
+    @classmethod
+    def down(cls, seconds=0.5):
+        """
+        Tilt launcher down for the specified duration.
+        
+        Args:
+            seconds (float): Duration in seconds to tilt down (default: 0.5)
+            
+        Returns:
+            None
+        """
+        cls.send(0x01)
+        time.sleep(seconds)
+        cls.stop()
 
-def down(seconds=0.5):
-    send(0x01)
-    time.sleep(seconds)
-    stop()
+    @classmethod
+    def fire(cls):
+        """
+        Fire the launcher.
+        
+        Sends the fire command and waits for 4 seconds before stopping,
+        allowing time for the launcher mechanism to complete.
+        
+        Args:
+            None
+            
+        Returns:
+            None
+        """
+        cls.send(0x10)
+        time.sleep(4)
+        cls.stop()
 
-def fire():
-    send(0x10)
-    time.sleep(4)
-    stop()
-
-def stop():
-    send(0x20)
+    @classmethod
+    def stop(cls):
+        """
+        Stop all launcher movement immediately.
+        
+        Args:
+            None
+            
+        Returns:
+            None
+        """
+        cls.send(0x20)
 
 
 # Begin Program
@@ -63,5 +151,3 @@ if dev.is_kernel_driver_active(0):
     dev.detach_kernel_driver(0)
 
 dev.set_configuration()
-
-
