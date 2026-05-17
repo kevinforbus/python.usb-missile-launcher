@@ -1,15 +1,18 @@
-# Control the usb desktop missile launcher
-import missileFunctions as mf
+"""Controls the usb desktop missile launcher"""
+
+from missileFunctions import Missile_Commands as mc
 
 
 # Function calls
-# mf.left(0.5)
-# mf.right(0.5)
-# mf.up(0.2)
-# mf.down(1)
+# mc.left(0.5)
+# mc.right(0.5)
+# mc.up(0.2)
+# mc.down(0.2)
+# mc.fire()
+
 
 # x=0
 # while x<2:
-#     mf.fire()
+    # mc.fire()
 #     x += 1
-# mf.stop()
+# mc.stop()
